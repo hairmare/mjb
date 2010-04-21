@@ -5,7 +5,7 @@ PKG_NAME:=pympdtouchgui
 PKG_VERSION:=0.328
 PKG_RELEASE:=0
 
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VSERION).tgz
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tgz
 PKG_SOURCE_URL:=http://www.spida.net/projects/software/pympdtouchgui/
 PKG_MD5SUM:=e1e895d245d0f2c94a1038d47c24cc01
 PKG_INSTALL:=1
