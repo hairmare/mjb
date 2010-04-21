@@ -34,18 +34,24 @@ endef
 define Build/Compile
 endef
 
+define Build/Install
+endef
+
+# dirty hack!
+MY_TMP_DIR:=$(TOPDIR)/build_dir/target-i386_uClibc-0.9.30.1/pympdtouchgui-0.328
+
 define Package/pympdtouchgui/install
 	$(INSTALL_DIR) $(1)/usr/bin
-	$(INSTALL_BIN) pympdtouchgui $(1)/usr/bin
+	$(CP) $(MY_TMP_DIR)/pympdtouchgui $(1)/usr/bin
 
-	$(INSTALL_DIR) $(1)/var/lib/pympdtouchgui
-	$(CP) config/clock-state $(1)/var/lib/pympdtouchgui/
+	#$(INSTALL_DIR) $(1)/var/ $(1)/var/lib/ $(1)/var/lib/pympdtouchgui
+	#$(CP) $(MY_TMP_DIR)/config/clock-state $(1)/var/lib/pympdtouchgui/
 
 	$(INSTALL_DIR) $(1)/etc
-	$(CP) config/pympdtouchguirc $(1)/etc/
+	$(CP) $(MY_TMP_DIR)/config/pympdtouchguirc $(1)/etc/
 	
 	$(INSTALL_DIR) $(1)/share/pympdtouchgui/themes
-	$(CP) config/themes/* $(1)/share/pympdtouchgui/themes/
+	$(CP) $(MY_TMP_DIR)/config/themes/* $(1)/share/pympdtouchgui/themes/
 endef
 
 $(eval $(call BuildPackage,pympdtouchgui))
