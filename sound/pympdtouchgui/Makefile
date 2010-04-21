@@ -28,6 +28,14 @@ define Package/pympdtouchgui/conffiles
 /etc/pympdtouchguirc
 endef
 
+define Package/pympdtouchgui/configure
+	true
+endef
+
+define Package/pympdtouchgui/compile
+	true
+endef
+
 define Package/pympdtouchgui/install
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(INSTALL_BIN) pympdtouchgui $(1)/usr/bin
