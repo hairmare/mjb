@@ -14,7 +14,7 @@ include $(INCLUDE_DIR)/package.mk
 
 define Package/pympdtouchgui
   SECTION:=sound
-  CATEGORY:=sound
+  CATEGORY:=Sound
   DEPENDS:=+pygame +twisted
   TITLE:=PyMPDTouchGUI - MPD Client for Touchscreens
   URL:=http://www.spida.net/projects/software/pympdtouchgui/
