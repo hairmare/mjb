@@ -24,8 +24,22 @@ define Package/description
 	PyMPDTouchGui is an mpd-client to be used via a touchscreen on a embedded-system
 endef
 
+define Package/pympdtouchgui/conffiles
+/etc/pympdtouchguirc
+endef
+
 define Package/pympdtouchgui/install
+	$(INSTALL_DIR) $(1)/usr/bin
+	$(INSTALL_BIN) pympdtouchgui $(1)/usr/bin
+
+	$(INSTALL_DIR) $(1)/var/lib/pympdtouchgui
+	$(CP) config/clock-state $(1)/var/lib/pympdtouchgui/
+
 	$(INSTALL_DIR) $(1)/etc
+	$(CP) config/pympdtouchguirc $(1)/etc/
+	
+	$(INSTALL_DIR) $(1)/share/pympdtouchgui/themes
+	$(CP) config/themes/* $(1)/share/pympdtouchgui/themes/
 endef
 
 $(eval $(call BuildPackage,pympdtouchgui))
