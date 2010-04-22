@@ -41,5 +41,6 @@ git pull
 ./scripts/feeds install pympdtouchgui
 
 cp $BASEDIR/openwrt.config .config
+cp $BASEDIR/keys/default.rsa.pub package/dropbear/files/dropbear.authorized_keys
 
 make world

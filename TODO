@@ -1,0 +1,13 @@
+
+make it easy to configure mpdas and networking (wlan)
+
+automounting of sd cards and usb hds complete with mpd integration
+
+pympdtouchgui default config tweaks and maybe some skinning
+
+test sound interface and config
+
+  amixer sset Master 100% unmute
+  amixer sset Headphone 100% unmute
+  amixer sset PCM 100% unmute
+

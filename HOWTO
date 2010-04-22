@@ -1,0 +1,24 @@
+
+build the hardware
+
+install an img to cf card and insert card in system
+
+hook hardware up to existing audio infra (PA or whatnot)
+
+boot the system
+
+telnet to the system
+
+set password with passwd
+
+hack /etc/mpdas for audioscrobbling
+
+hack /etc/mpd.conf if you want a password based mpd setup
+
+change the password in /etc/pymodtouchgui based on needs
+
+install additional clients on you mobe or elsewhere
+
+hand out infos and display qr codes so other may get clients
+
+have fun!
