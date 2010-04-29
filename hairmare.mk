@@ -11,7 +11,8 @@ repo/mjb/init: ../mjb
 repo/openwrt/init: ../openwrt
 ../openwrt:
 	cd .. && git clone git://nbd.name/openwrt.git
-feeds/install: ../openwrt/feeds.conf
+
+feeds/install: ../openwrt/feeds.conf repo/init
 ../openwrt/feeds.conf: openwrt.feeds
 	cp openwrt.feeds ../openwrt/feeds.conf
 	cd ../openwrt && ./scripts/feeds update
