@@ -136,12 +136,12 @@ h3. Build an Image
 
 p. The build process for the mpbox image is layered ontop of the OpenWRT build tools. It is fully git based and uses various soures. You start the build process in an empty dir by cloning the mpbox repo:
 
-# git svn clone git://todotodotodo
+# git svn clone git://github.com/hairmare/mjb.git
 
-p. In the mpbox dir there is a script that will take care of setting up and building OpenWRT for you.
+p. In the mjb dir there is a env that will take care of setting up and building OpenWRT for you.
 
-# cd mpbox
-# sh build_it.sh
+# cd mjb
+# make world
 
 p. If all went well, you will find an mpbox image in the bin/x86 dir of the OpenWRT repo that was created by the build script.
 

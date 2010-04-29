@@ -1,4 +1,4 @@
 src-git packages git://nbd.name/packages.git
 src-git desktop ../desktop
 src-git qi git://projects.qi-hardware.com/openwrt-packages.git
-src-git hairmare ../hairmare
+src-git hairmare git://github.com/hairmare/mjb.git

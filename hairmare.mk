@@ -1,12 +1,12 @@
-repo/init: repo/desktop/init repo/hairmare/init repo/openwrt/init
+repo/init: repo/desktop/init repo/mjb/init repo/openwrt/init
 
 repo/desktop/init: ../desktop
 ../desktop:
 	cd .. && git svn clone svn://svn.openwrt.org/openwrt/feeds/desktop
 
-repo/hairmare/init: ../hairmare
-../hairmare:
-	cd .. && git clone ...
+repo/mjb/init: ../mjb
+../mjb:
+	cd .. && git clone git://github.com/hairmare/mjb.git
 
 repo/openwrt/init: ../openwrt
 ../openwrt:
@@ -39,6 +39,7 @@ package/dropbear/install:
 
 
 distro/upload: distro/docs
+	rsync -az --delete --force _site/ hairmare@hairmare.ch:/var/www/mjb.hairmare.ch/htdocs/
 	
 distro/docs: _site/docs _site/docs/index.html
 
