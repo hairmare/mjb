@@ -1,24 +1,212 @@
 
-build the hardware
+h2. Build the Hardware
 
-install an img to cf card and insert card in system
+h3. Buy Components
 
-hook hardware up to existing audio infra (PA or whatnot)
+p. If you buy the electronics from wholesale resellers we are looking at a BOM that is slightly below 500 CHF. Most of the parts should also be available locally. I found the touchscreen to be the hardest part to source at a reasonable price.
 
-boot the system
+p. You will need
 
-telnet to the system
+- Alix3x3 from pcengines.ch
+- 9' touchscreen with VGA and USB (mine is an "eGalax Inc. Touch" Vendor=0eef Product=0001)
+- miniPCI WLAN card
+- pigtail cables (2)
+- antennas (2)
+- USB Hub (self powered, 5 ports)
+- external notebook drive
+- SD Card reader
+- usb cable (male - female)
+- audio cable (male - female)
+- a power strip (3x)
+- 220V switch
+- wood 
 
-set password with passwd
 
-hack /etc/mpdas for audioscrobbling
+h3. Hookup Electronics
+
+p. It is recommended that you hook up all electronics on a lab bench before building the case. This way you can test the system with all parts while they are still easy to replace. It also allows you to plan ahead for building the case, as you will know how much space the indivdual parts take up.
+
+h4. Install WLAN
+
+p. The WLAN parts are sensitive to static shock so you should remeber to discharge by touching the negative end of a plugged in powerbrick. Touching the (metal) case of your desktop should also work.
+
+p. You can use either miniPCI slot for the WLAN card. You will have to slide in the card in a 45 deg. angle until its all the way in and then press down on it to make contact and snap in place.
+
+TODO fotos
+
+p. Connect the pigtail cables to the WLAN board and screw the antennas to the end of them. You WLAN should now be ready to connect.
+
+TODO connected fotos
+
+p. If you need multiple WLAN devices you can switch over the board and repeat the above steps with the miniPCI port there.
+
+TODO bottom miniPCI foto
+
+h4. USB Hub
+
+p. Plug the USB Hubs uplink into one port of the Alix.
+
+TODO image
+
+h4. HDD Install
+
+p. We are going to connect the notebook HDD to the self powered USB hub as well as directly to the board. This way the HDD gets its power from to different power supplies.
+
+TODO image showing both connectors
+
+h4. Touchscreen connection
+
+p. The touchscreen comes with an SVR connector that screws into a combined VGA/USB cable. Screw together the two cables and plugin the SVR connector to the Alix Boards. Connect the USB lead to the USB hub you added in the last step.
+
+TODO bild von monitor und kabel zu alix
+
+h4. More USB Devices
+
+p. At this point you can plug the SD card reader and the USB cable into the hub. We're going to use the female end of the USB cable as a flash stick port on the final device.
+
+TODO image
+
+p. In my setup there is one freee port left on the USB hub. Its for upgrading the mpbox with a bluetooth module or for adding more internal storage by way of another self powered USB hub.
+
+h4. Networking
+
+p. You will need an ethernet connection for setting up the device. You might as well plug that in right now.
+
+h4. Power to the device
+
+p. This is the last part of building your electronics. The components get all the power they need. You should always plugin the leads to the different devices before plugging in their power brick.
+
+p. You need to plug all three power bricks into the power strip you got.
+
+TODO image w/ 3 bricks
+
+p. Thats it! Basically the electronics are now built. You will want to grab an image and install the SD card in the Alix board before you power the whole shebang up for testing.
+
+h3. Building the Casee
+
+p. The case we're building has enough space for the whole electronics withou much space to spare. You might need to redimension this depending on the size of your parts.
+
+h4. Calculate Case Dimensions
+
+h4. Cut your Wood
+
+p. Try to get the wood cut at your woodworkers. He usually has a bigger and better machine than you do. If you tell the carpenter exactly what you need he'll do a much better job than you could at home.
+
+TODO faserung von wegen verziehen, wie auswälen
+
+h4. Make a Template for the Frame
+
+h4. Form-Press the Frame
+
+h4. Add the Back-Panel
+
+h4. Paint the Frame and Front-Panel
+
+p. You might want to add some color to your design. I'm varnishing the main frame with a slick gloss varnish to protect the wood from the elements without getting an unanatural look.
+
+TODO image
+
+p. For the Front-Panel i'm going for a dark blue piano lacquer look. The sky is actually the limit on this.
+
+TODO image of various painting steps
+
+h4. Add Fixtures for Mounting Electronics
+
+p. You will want to wait for the frame and panel to dry before starting this step. You'll have to mount the fixtures at the right place so screen and cables all end up in the right cutout on the front panel.
+
+TODO image of the fixtures
+TODO image with schematic drwaing showing where the electronics will go.
+TODO image with see through panel and electonic schematics
+
+h4. Mount Electronics
+
+h4. Mount Front-Panel
+
+
+
+h2. Get the Software
+
+p. You can either build you own image or grab a ready made one from the servers.
+
+h3. Download an Image
+
+p. WRITEME
+
+h3. Build an Image
+
+p. The build process for the mpbox image is layered ontop of the OpenWRT build tools. It is fully git based and uses various soures. You start the build process in an empty dir by cloning the mpbox repo:
+
+# git svn clone git://todotodotodo
+
+p. In the mpbox dir there is a script that will take care of setting up and building OpenWRT for you.
+
+# cd mpbox
+# sh build_it.sh
+
+p. If all went well, you will find an mpbox image in the bin/x86 dir of the OpenWRT repo that was created by the build script.
+
+# cd ../openwrt/bin/x86/
+# ls
+
+h2. Install the System
+
+h3. Flash a CF Card
+
+p. You will be flashing a stock CF card with the mpbox image. You can do this with any computer that takes CF cards. You can get cheapU SB CF drives pretty much everywhere nowadays.
+
+p. If your OS automounted the CF card you will need to unmount it before you can use dd to write the image to the card. The following command overwrites the cards current contents.
+
+# dd if=openwrt-x86-generic-squashfs.image of=/dev/DISK
+
+h3. Configure Networking
+
+p. For the next few steps you will want to hook the device up to a network that has a dhcp server using an Ethernet cable. You can then tweak networking for the needs you will have  when you finally install the system.
+
+h4. Logging In
+
+p. The device has a running ssh server. Initially the server supports passwordless logins with a private rsa key that you can get from the internet. You might have to look at the dhcp leases on your dhcp server to find the IP of the device. 
+
+# wget http://tha_key
+# ssh-add tha_key
+# ssh <IP-ADDR>
+
+p. Once you are in the device you should replace the rsa public key with your own. The authorized_keys file is located in /etc/dropbear/authorized_keys
+
+h4. Setup Wireless
+
+p. The default setup opens a unsecured wireless network wich is used soley for connecting to the device. User may connect to the device but they cannot access the internet directly.
+
+p. Depending on how wlan-busy your neighborhood is you may want to add a simple key so you can restrict access to you guests by telling them the key.
+
+p. The config is in /etc/config/wireless
+
+h4. Setup Audioscrobbling
+
+p. Hack /etc/mpdas for audioscrobbling
+
+h4. Configure Access to the Device
 
 hack /etc/mpd.conf if you want a password based mpd setup
-
 change the password in /etc/pymodtouchgui based on needs
 
-install additional clients on you mobe or elsewhere
+h3. Integrate with a PA 
 
-hand out infos and display qr codes so other may get clients
+p. Mpbox will need to get hooked up to an existing PA or home audio setup. 
+
+h2. Use the System
+
+hand out infos and display qr codes so others may get clients
+
+h3. Clients
+
+
+h4. Touchscreen
+
+
+
+h4. iPhone
+
+The recommened Client is MPoD. It is available freely in the App Store.
+
 
 have fun!

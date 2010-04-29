@@ -5,9 +5,63 @@ automounting of sd cards and usb hds complete with mpd integration
 
 pympdtouchgui default config tweaks and maybe some skinning
 
-test sound interface and config
+clean avahi integration for mpd
 
-  amixer sset Master 100% unmute
-  amixer sset Headphone 100% unmute
-  amixer sset PCM 100% unmute
+mpd streaming
 
+
+fixup for egalax touchscreen
+ - remove usbhid if usbtouchscreen module works
+ - try with xorg vs directfb
+ - try with eeti tkusb module if that fails
+
+
+
+#/etc/rc.local
+
+iwconfig ath0 freq 2.432G
+
+amixer sset PCM 80% unmute
+amixer sset Headphone 80% unmute
+amixer sset Master 80% unmute
+
+mkdir -p /media/local
+
+export TSLIB_CONSOLEDEVICE=none
+export TSLIB_FBDEVICE=/dev/fb0
+export TSLIB_TSDEVICE=/dev/input/event0
+export TSLIB_TSEVENTTYPE=INPUT
+export TSLIB_PLUGINDIR=/usr/lib/ts
+export SDL_MOUSEDRV=TSLIB
+export SDL_MOUSEDEV=$TSLIB_TSDEVICE
+export SDL_NOMOUSE=1
+
+/usr/bin/pympdtouchgui &
+
+exit 0
+
+
+# /etc/directfbrc
+
+system=fbdev
+fbdev=/dev/fb0
+mode=800x600
+depth=32
+disable-module=keyboard
+#mouse-source=/dev/input/event0
+no-vt-switch
+
+
+
+
+
+# damn image fixup
+
+scp root@192.168.1.183:/usr/share/pympdtouchgui/themes/default/*.png
+for i in `ls *.png`; do 
+	echo $i; 
+	pngtopnm $i > "$i.pnm"; 
+	ppmtobmp "$i.pnm" > "$i.bmp"; 
+	mv "$i.bmp" new/$i; 
+done
+cp new/*.png root@192.168.1.183:/usr/share/pympdtouchgui/themes/default/
