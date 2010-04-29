@@ -141,6 +141,7 @@ p. The build process for the mpbox image is layered ontop of the OpenWRT build t
 p. In the mjb dir there is a env that will take care of setting up and building OpenWRT for you.
 
 # cd mjb
+# make 
 # make world
 
 p. If all went well, you will find an mpbox image in the bin/x86 dir of the OpenWRT repo that was created by the build script.
