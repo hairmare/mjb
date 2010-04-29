@@ -1,10 +1,10 @@
-h2. About MJB Jukebox Box
-
 p. MJB Jukebox Box is an "OpenWRT":http://www.openwrt.org based "mpd":http://mpd.wikia.com distribution. This page documents the distro as well as the hardware it runs on. The box is basically a wall mounted audio player based on cheap off the shelf parts. It has no amp of its own and the user is supposed to supply that independantly.
 
 <ul id="toc"></ul>
 
 h2. Build the Hardware
+
+p. You will need two types of skills to pull this project off. A regular computer geek should be properly enabled for building the actual computer. A woodworker geek will come in handy for building the case.
 
 h3. Buy Components
 
@@ -12,19 +12,19 @@ p. If you buy the electronics from wholesale resellers we are looking at a BOM t
 
 p. You will need
 
-- Alix3x3 from pcengines.ch
-- 9' touchscreen with VGA and USB (mine is a CVMW-E56 "eGalax Inc. Touch" Vendor=0eef Product=0001)
-- miniPCI WLAN card
-- pigtail cables (2)
-- antennas (2)
-- USB Hub (self powered, 5 ports)
-- external notebook drive
-- SD Card reader
-- usb cable (male - female)
-- audio cable (male - female)
-- a power strip (3x)
-- 220V switch
-- wood 
+* Alix3x3 single board computer  "pcengines.ch":http://pcengines.ch/alix3d3.htm
+* eGalax 8 inch touchscreen CVMW-E56 "chinavasion.com":http://www.chinavasion.com/product_info.php/pName/8-inch-touchscreen-lcd-monitor-pc-pos-media-remote/
+* miniPCI WLAN card
+* pigtail cables (2)
+* antennas (2)
+* ROLINE USB 2.0 Hub "rotronic.ch":http://shop.rotronic.ch/roline_usb_2_0_hub_black_and_white_7_ports_mit_netzteil/14.02.5011.html
+* external notebook drive
+* ROLINE USB 2.0 Multi Card Reader fÃ¼r Notebook "rotronic.ch":http://shop.rotronic.chroline_usb_2_0_multi_card_reader_fur_notebooks/15.08.6247.html
+* usb cable (male - female)
+* audio cable (male - female)
+* a power strip (3x)
+* 220V switch
+* wood 
 
 
 h3. Hookup Electronics
@@ -33,9 +33,9 @@ p. It is recommended that you hook up all electronics on a lab bench before buil
 
 h4. Install WLAN
 
-p. The WLAN parts are sensitive to static shock so you should remember to discharge by touching the negative end of a plugged in powerbrick. Touching the (metal) case of your desktop should also work.
+p. The WLAN parts are sensitive to static shock so you should remember to discharge by touching the negative end of a plugged in power brick. Touching the (metal) case of your desktop pc will also work.
 
-p. You can use either miniPCI slot for the WLAN card. You will have to slide in the card in a 45 deg. angle until its all the way in and then press down on it to make contact and snap in place.
+p. You can use either miniPCI slot for the WLAN card. You will have to slide in the card in a 45 deg. angle until its all the way in and then press down on it to make contact and snap it in place.
 
 TODO fotos
 
@@ -154,6 +154,18 @@ p. If all went well, you will find an MJB image in the bin/x86 dir of the OpenWR
 # cd ../openwrt/bin/x86/
 # ls
 
+h3. Image Patches
+
+The MJB image contains various patches that are described here in detail. Chances are you might have to remove some of the patches if you swap out hardware. 
+
+h4. eGalax Patchset
+
+p. The eGalax patchset takes car of swapping ABS_X/Y coordinates with ABS_Z/RX coordinates. Its based on the patches in the discussion for "a bug":https://bugzilla.redhat.com/show_bug.cgi?id=473144#c42 in redhats bugzilla. I had to change some more coords in packages not mentioned in the bug.
+
+p. This patchh is a dirty  hack and it should get replaced by some more or less clean quirks handling codde in usbhid.
+
+* TODO detailed list of patches
+
 h2. Install the System
 
 h3. Flash a CF Card
@@ -216,7 +228,7 @@ The recomended Client is "MPoD":http://www.katoemba.net/makesnosenseatall/mpod/.
 
 h2. Links
 
-- "Github Repo":http://github.com/hairmare/mjb
+* "Github Repo":http://github.com/hairmare/mjb
 
 
 have fun!
