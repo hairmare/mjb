@@ -12,7 +12,7 @@ repo/openwrt/init: ../openwrt
 ../openwrt:
 	cd .. && git clone git://nbd.name/openwrt.git
 
-feeds/install: ../openwrt/feeds.conf repo/init
+feeds/install: ../openwrt/feeds.conf repo/init repo/patch
 ../openwrt/feeds.conf: openwrt.feeds
 	cp openwrt.feeds ../openwrt/feeds.conf
 	cd ../openwrt && ./scripts/feeds update
@@ -24,6 +24,14 @@ repo/desktop/update: repo/desktop/init
 repo/openwrt/update:
 	cd ../openwrt && git pull
 	cd ../openwrt && ./scripts/feeds update
+
+repo/patch: repo/openwrt/patch repo/packages/patch
+
+repo/openwrt/patch: patches/openwrt.patch
+	cd ../openwrt && git apply ../mjb/patches/openwrt.patch
+
+repo/packages/patch: patches/openwrt_packages.patch
+	cd ../openwrt/feeds/packages/  && git apply ../../../mjb/patches/openwrt_packages.patch
 	
 repo/world: feeds/install repo/openwrt/install
 	cd ../openwrt && make world

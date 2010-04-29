@@ -1,0 +1,53 @@
+diff --git a/package/dropbear/Makefile b/package/dropbear/Makefile
+index 5a6ab3b..76666e7 100644
+--- a/package/dropbear/Makefile
++++ b/package/dropbear/Makefile
+@@ -91,6 +91,8 @@ define Package/dropbear/install
+ 	ln -sf ../sbin/dropbear $(1)/usr/bin/dropbearkey
+ 	$(INSTALL_DIR) $(1)/etc/config
+ 	$(INSTALL_DATA) ./files/dropbear.config $(1)/etc/config/dropbear
++	$(INSTALL_DIR) $(1)/etc/dropbear
++	$(INSTALL_DATA) ./files/dropbear.authorized_keys $(1)/etc/dropbear/authorized_keys
+ 	$(INSTALL_DIR) $(1)/etc/init.d
+ 	$(INSTALL_BIN) ./files/dropbear.init $(1)/etc/init.d/dropbear
+ 	$(INSTALL_DIR) $(1)/usr/lib/opkg/info
+diff --git a/package/dropbear/files/dropbear.config b/package/dropbear/files/dropbear.config
+index 492d2a1..c1c3ae8 100644
+--- a/package/dropbear/files/dropbear.config
++++ b/package/dropbear/files/dropbear.config
+@@ -1,4 +1,4 @@
+ config dropbear
+-	option PasswordAuth 'on'
++	option PasswordAuth 'off'
+ 	option Port         '22'
+ #	option BannerFile   '/etc/banner'
+diff --git a/package/kernel/modules/fb.mk b/package/kernel/modules/fb.mk
+new file mode 100644
+index 0000000..b6d741f
+--- /dev/null
++++ b/package/kernel/modules/fb.mk
+@@ -0,0 +1,24 @@
++
++FRAMEBUFFER_MENU:=Framebuffer Support
++
++define KernelPackage/fbgeodelx
++  SUBMENU:=$(FRAMEBUFFER_MENU)
++  TITLE:=AMD Geode family framebuffer support (EXPERIMENTAL)
++  KCONFIG:= \
++  	CONFIG_MGEODE_LX=y \
++	CONFIG_FIRMWARE_EDID=y \
++  	CONFIG_FB=y \
++  	CONFIG_FB_GEODE=y \
++	CONFIG_FB_GEODE_LX=y
++  #FILES:=$(LINUX_DIR)/drivers/video/geode/lxfb.$(LINUX_KMOD_SUFFIX)
++endef
++$(eval $(call KernelPackage,fbgeodelx))
++
++define KernelPackage/fbconsole
++  SUBMENU:=$(FRAMEBUFFER_MENU)
++  TITLE:=Framebuffer Console support
++  KCONFIG:=CONFIG_FRAMEBUFFER_CONSOLE=y
++endef
++$(eval $(call KernelPackage,fbconsole))
++
++
