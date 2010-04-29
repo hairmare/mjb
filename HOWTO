@@ -1,3 +1,8 @@
+h2. About MJB Jukebox Box
+
+p. MJB Jukebox Box is an "OpenWRT":http://www.openwrt.org based "mpd":http://mpd.wikia.com distribution. This page documents the distro as well as the hardware it runs on. The box is basically a wall mounted audio player based on cheap off the shelf parts. It has no amp of its own and the user is supposed to supply that independantly.
+
+<ul id="toc"></ul>
 
 h2. Build the Hardware
 
@@ -8,7 +13,7 @@ p. If you buy the electronics from wholesale resellers we are looking at a BOM t
 p. You will need
 
 - Alix3x3 from pcengines.ch
-- 9' touchscreen with VGA and USB (mine is an "eGalax Inc. Touch" Vendor=0eef Product=0001)
+- 9' touchscreen with VGA and USB (mine is a CVMW-E56 "eGalax Inc. Touch" Vendor=0eef Product=0001)
 - miniPCI WLAN card
 - pigtail cables (2)
 - antennas (2)
@@ -28,7 +33,7 @@ p. It is recommended that you hook up all electronics on a lab bench before buil
 
 h4. Install WLAN
 
-p. The WLAN parts are sensitive to static shock so you should remeber to discharge by touching the negative end of a plugged in powerbrick. Touching the (metal) case of your desktop should also work.
+p. The WLAN parts are sensitive to static shock so you should remember to discharge by touching the negative end of a plugged in powerbrick. Touching the (metal) case of your desktop should also work.
 
 p. You can use either miniPCI slot for the WLAN card. You will have to slide in the card in a 45 deg. angle until its all the way in and then press down on it to make contact and snap in place.
 
@@ -56,7 +61,7 @@ TODO image showing both connectors
 
 h4. Touchscreen connection
 
-p. The touchscreen comes with an SVR connector that screws into a combined VGA/USB cable. Screw together the two cables and plugin the SVR connector to the Alix Boards. Connect the USB lead to the USB hub you added in the last step.
+p. The touchscreen comes with an SVR connector that screws into a combined VGA/USB cable. Screw together the two cables and plugin the VGA connector to the Alix board and the SVR connector to the screen. Connect the USB lead to the USB hub you added earlier.
 
 TODO bild von monitor und kabel zu alix
 
@@ -66,7 +71,7 @@ p. At this point you can plug the SD card reader and the USB cable into the hub.
 
 TODO image
 
-p. In my setup there is one freee port left on the USB hub. Its for upgrading the mpbox with a bluetooth module or for adding more internal storage by way of another self powered USB hub.
+p. In my setup there is one freee port left on the USB hub. Its for upgrading the MJB with a bluetooth module or for adding more internal storage by way of another self powered USB hub.
 
 h4. Networking
 
@@ -82,7 +87,7 @@ TODO image w/ 3 bricks
 
 p. Thats it! Basically the electronics are now built. You will want to grab an image and install the SD card in the Alix board before you power the whole shebang up for testing.
 
-h3. Building the Casee
+h3. Building the Case
 
 p. The case we're building has enough space for the whole electronics withou much space to spare. You might need to redimension this depending on the size of your parts.
 
@@ -134,7 +139,7 @@ p. WRITEME
 
 h3. Build an Image
 
-p. The build process for the mpbox image is layered ontop of the OpenWRT build tools. It is fully git based and uses various soures. You start the build process in an empty dir by cloning the mpbox repo:
+p. The build process for the MJB image is layered ontop of the OpenWRT build tools. It is fully git based and uses various soures. You start the build process in an empty dir by cloning the MJB repo:
 
 # git clone git://github.com/hairmare/mjb.git
 
@@ -144,7 +149,7 @@ p. In the mjb dir there is a env that will take care of setting up and building 
 # make 
 # make world
 
-p. If all went well, you will find an mpbox image in the bin/x86 dir of the OpenWRT repo that was created by the build script.
+p. If all went well, you will find an MJB image in the bin/x86 dir of the OpenWRT repo that was created by the build script.
 
 # cd ../openwrt/bin/x86/
 # ls
@@ -153,7 +158,7 @@ h2. Install the System
 
 h3. Flash a CF Card
 
-p. You will be flashing a stock CF card with the mpbox image. You can do this with any computer that takes CF cards. You can get cheapU SB CF drives pretty much everywhere nowadays.
+p. You will be flashing a stock CF card with the MJB image. You can do this with any computer that takes CF cards. You can get cheap USB CF drives pretty much everywhere nowadays.
 
 p. If your OS automounted the CF card you will need to unmount it before you can use dd to write the image to the card. The following command overwrites the cards current contents.
 
@@ -167,8 +172,8 @@ h4. Logging In
 
 p. The device has a running ssh server. Initially the server supports passwordless logins with a private rsa key that you can get from the internet. You might have to look at the dhcp leases on your dhcp server to find the IP of the device. 
 
-# wget http://tha_key
-# ssh-add tha_key
+# wget http://mjb.hairmare.ch/default.key
+# ssh-add default.key
 # ssh <IP-ADDR>
 
 p. Once you are in the device you should replace the rsa public key with your own. The authorized_keys file is located in /etc/dropbear/authorized_keys
@@ -192,7 +197,7 @@ change the password in /etc/pymodtouchgui based on needs
 
 h3. Integrate with a PA 
 
-p. Mpbox will need to get hooked up to an existing PA or home audio setup. 
+p. MJB will need to get hooked up to an existing PA or home audio setup. 
 
 h2. Use the System
 
@@ -207,7 +212,11 @@ h4. Touchscreen
 
 h4. iPhone
 
-The recommened Client is MPoD. It is available freely in the App Store.
+The recomended Client is "MPoD":http://www.katoemba.net/makesnosenseatall/mpod/. It is available in the App Store for free.
+
+h2. Links
+
+- "Github Repo":http://github.com/hairmare/mjb
 
 
 have fun!

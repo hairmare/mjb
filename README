@@ -2,5 +2,4 @@ MJB Jukebox Box is a small project you can use to build an openwrt image for run
 a simple mpd based jukebox device.
 
 This project is still very much in its infancy and you should not expect it work in 
-any way. This should improve over the next couple of weeks as i get patches upstreamed
-and documentation finished.
+any way. This should improve over the next couple of weeks.
