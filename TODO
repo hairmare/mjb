@@ -1,21 +1,37 @@
+poor mans project plan
 
-make it easy to configure mpdas and networking (wlan)
+* make it easy (ie well documented) to configure mpdas and networking (wlan)
+* automounting of sd cards and usb hds complete with mpd integration
+* pympdtouchgui default config tweaks and maybe some skinning
+* clean avahi integration for mpd
+* mpd streaming (vorbis)
+* fix for egalax touchscreen
+** commit patchset to local rep
+* libsdl-image jpg and png support fix
+* cleanup tslib integration with nice pkg with ts_calibrate and firstrun stuffs
+* test from documented update process
+* streamline distro publishing process
+** only one hardware type to consider for now
+* build protoype case
+* refactor power supply so i only need one power brick
+** maybe the Alix is up to this -> grab 5V for USB hib from there?
+** 12V for screen
+** 12-18V for Alix
+** 5V for USB Hub
+* write user manual that is easy enough that even a drunk in a bar might grasp the box
+** leaflet format with a heavily graphical presentation
+** a bit like the safety card in planes
+* add bluetooth support
+* fix routing things after testing what interface to use for getting through the big fat wall in the first boxes home
+* simple web gui
+** i found none that look as simple as pympdtouchgui
+** i only want minimal features and no bells or whistles
+** add links for downloading recommended clients
+** open up web access for said downloads (ie only app store things work on the iPhone)
+* create a list of compatible client devices
+* lirc support?
 
-automounting of sd cards and usb hds complete with mpd integration
-
-pympdtouchgui default config tweaks and maybe some skinning
-
-clean avahi integration for mpd
-
-mpd streaming
-
-
-fixup for egalax touchscreen
- - remove usbhid if usbtouchscreen module works
- - try with xorg vs directfb
- - try with eeti tkusb module if that fails
-
-
+some files:
 
 #/etc/rc.local
 

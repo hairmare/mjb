@@ -1,6 +1,10 @@
-.p MJB is an "OpenWRT":http://www.openwrt.org based "mpd":http://mpd.wikia.com system.
+p. MJB(MJB Jukebox Box) is an "OpenWRT":http://www.openwrt.org based "mpd":http://mpd.wikia.com system.
+
+p. The following image shows a very early prototype that basically works. The box part hasn't been built so its mounted on a sheet of corrugated cardboard carton with some twist-tie.
+
+!http://cdn.cloudfiles.mosso.com/c54102/x2_14342fb!
 
 # "MJB Documentation":/docs/
 # "Public Github Repo":http://github.com/hairmare/mjb
 
-.p MJB is still in its infancy, but I'm going with publish early, publish often.
+p. MJB is still in its infancy, but I'm going with publish early, publish often.
