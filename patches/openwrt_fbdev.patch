@@ -1,0 +1,41 @@
+diff --git a/package/kernel/modules/fb.mk b/package/kernel/modules/fb.mk
+new file mode 100644
+index 0000000..2f6a80d
+--- /dev/null
++++ b/package/kernel/modules/fb.mk
+@@ -0,0 +1,35 @@
++#
++# Copyright (C) 2006-2010 OpenWrt.org
++#
++# This is free software, licensed under the GNU General Public License v2.
++# See /LICENSE for more information.
++#
++
++FRAMEBUFFER_MENU:=Framebuffer Support
++
++define KernelPackage/fb-geodelx
++  SUBMENU:=$(FRAMEBUFFER_MENU)
++  TITLE:=AMD Geode LX framebuffer support (EXPERIMENTAL)
++  KCONFIG:= \
++  	CONFIG_FB=y \
++  	CONFIG_FB_GEODE=y \
++	CONFIG_FB_GEODE_LX
++  FILES:=$(LINUX_DIR)/drivers/video/geode/lxfb.$(LINUX_KMOD_SUFFIX)
++endef
++$(eval $(call KernelPackage,fb-geodelx))
++
++define KernelPackage/fb-geodelx/description
++  Framebuffer driver for the display controller integrated into the
++  AMD Geode LX processors. The module will  be called lxfb.
++endef
++
++define KernelPackage/fbconsole
++  SUBMENU:=$(FRAMEBUFFER_MENU)
++  TITLE:=Framebuffer Console support
++  KCONFIG:=CONFIG_FRAMEBUFFER_CONSOLE=y
++endef
++$(eval $(call KernelPackage,fbconsole))
++
++define KernelPackage/fbconsole/description
++  Low-level framebuffer-based console driver.
++endef

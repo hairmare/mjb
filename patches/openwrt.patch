@@ -21,33 +21,4 @@ index 492d2a1..c1c3ae8 100644
 +	option PasswordAuth 'off'
  	option Port         '22'
  #	option BannerFile   '/etc/banner'
-diff --git a/package/kernel/modules/fb.mk b/package/kernel/modules/fb.mk
-new file mode 100644
-index 0000000..b6d741f
---- /dev/null
-+++ b/package/kernel/modules/fb.mk
-@@ -0,0 +1,24 @@
-+
-+FRAMEBUFFER_MENU:=Framebuffer Support
-+
-+define KernelPackage/fbgeodelx
-+  SUBMENU:=$(FRAMEBUFFER_MENU)
-+  TITLE:=AMD Geode family framebuffer support (EXPERIMENTAL)
-+  KCONFIG:= \
-+  	CONFIG_MGEODE_LX=y \
-+	CONFIG_FIRMWARE_EDID=y \
-+  	CONFIG_FB=y \
-+  	CONFIG_FB_GEODE=y \
-+	CONFIG_FB_GEODE_LX=y
-+  #FILES:=$(LINUX_DIR)/drivers/video/geode/lxfb.$(LINUX_KMOD_SUFFIX)
-+endef
-+$(eval $(call KernelPackage,fbgeodelx))
-+
-+define KernelPackage/fbconsole
-+  SUBMENU:=$(FRAMEBUFFER_MENU)
-+  TITLE:=Framebuffer Console support
-+  KCONFIG:=CONFIG_FRAMEBUFFER_CONSOLE=y
-+endef
-+$(eval $(call KernelPackage,fbconsole))
-+
-+
+
