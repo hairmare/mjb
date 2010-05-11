@@ -1,7 +1,7 @@
 
-HAIRMARE_TOPDIR:=.
+MJB_TOPDIR:=.
 
-include $(HAIRMARE_TOPDIR)/hairmare.mk
+include $(MJB_TOPDIR)/mjb.mk
 
 # setup initial repos 
 init: repo/init
