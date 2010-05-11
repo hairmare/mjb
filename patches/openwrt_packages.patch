@@ -1,3 +1,326 @@
+diff --git a/Xorg/lib/tslib/Makefile b/Xorg/lib/tslib/Makefile
+index 6923182..b78de78 100644
+--- a/Xorg/lib/tslib/Makefile
++++ b/Xorg/lib/tslib/Makefile
+@@ -8,12 +8,12 @@
+ include $(TOPDIR)/rules.mk
+ 
+ PKG_NAME:=tslib
+-PKG_VERSION:=1.0
+-PKG_RELEASE:=1
++PKG_VERSION:=1.0.84
++PKG_RELEASE:=0
+ 
+ PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
+ PKG_SOURCE_URL:=http://download.berlios.de/tslib/
+-PKG_MD5SUM:=92b2eb55b1e4ef7e2c0347069389390e
++PKG_MD5SUM:=40e63adc983a05c9e922c4e21e5ecaae
+ 
+ PKG_INSTALL:=1
+ PKG_FIXUP:=libtool
+diff --git a/Xorg/lib/tslib/patches/dirty_egalax_hack.patch b/Xorg/lib/tslib/patches/dirty_egalax_hack.patch
+new file mode 100644
+index 0000000..8daa23f
+--- /dev/null
++++ b/Xorg/lib/tslib/patches/dirty_egalax_hack.patch
+@@ -0,0 +1,47 @@
++diff -Naur tslib-1.0.84/plugins/input-raw.c tslib/plugins/input-raw.c
++--- tslib-1.0.84/plugins/input-raw.c	2010-05-03 19:10:55.000000000 +0200
+++++ tslib/plugins/input-raw.c	2010-05-03 23:08:51.000000000 +0200
++@@ -92,9 +92,9 @@
++ 	}
++ 
++ 	if ((ioctl(ts->fd, EVIOCGBIT(EV_ABS, sizeof(absbit)), absbit)) < 0 ||
++-		!(absbit[BIT_WORD(ABS_X)] & BIT_MASK(ABS_X)) ||
++-		!(absbit[BIT_WORD(ABS_Y)] & BIT_MASK(ABS_Y))) {
++-		fprintf(stderr, "tslib: Selected device is not a touchscreen (must support ABS_X and ABS_Y events)\n");
+++		!(absbit[BIT_WORD(ABS_Z)] & BIT_MASK(ABS_Z)) ||
+++		!(absbit[BIT_WORD(ABS_RX)] & BIT_MASK(ABS_RX))) {
+++		fprintf(stderr, "tslib: Selected device is not a touchscreen (must support ABS_Z and ABS_RX events)\n");
++ 		return -1;
++ 	}
++ 
++@@ -179,10 +179,10 @@
++ 				break;
++ 			case EV_ABS:
++ 				switch (ev.code) {
++-				case ABS_X:
+++				case ABS_Z:
++ 					i->current_x = ev.value;
++ 					break;
++-				case ABS_Y:
+++				case ABS_RX:
++ 					i->current_y = ev.value;
++ 					break;
++ 				case ABS_PRESSURE:
++@@ -218,7 +218,7 @@
++ 
++ 			if (ev.type == EV_ABS) {
++ 				switch (ev.code) {
++-				case ABS_X:
+++				case ABS_Z:
++ 					if (ev.value != 0) {
++ 						samp->x = i->current_x = ev.value;
++ 						samp->y = i->current_y;
++@@ -228,7 +228,7 @@
++ 						continue;
++ 					}
++ 					break;
++-				case ABS_Y:
+++				case ABS_RX:
++ 					if (ev.value != 0) {
++ 						samp->x = i->current_x;
++ 						samp->y = i->current_y = ev.value;
+diff --git a/Xorg/lib/tslib/patches/event1.patch b/Xorg/lib/tslib/patches/event1.patch
+deleted file mode 100644
+index 88cc3f3..0000000
+--- a/Xorg/lib/tslib/patches/event1.patch
++++ /dev/null
+@@ -1,80 +0,0 @@
+-
+-#
+-# Patch managed by http://www.holgerschurig.de/patcher.html
+-#
+-
+---- tslib/tests/ts_calibrate.c~event1
+-+++ tslib/tests/ts_calibrate.c
+-@@ -179,11 +179,7 @@
+- 	if( (tsdevice = getenv("TSLIB_TSDEVICE")) != NULL ) {
+- 		ts = ts_open(tsdevice,0);
+- 	} else {
+--#ifdef USE_INPUT_API
+--		ts = ts_open("/dev/input/event0", 0);
+--#else
+--		ts = ts_open("/dev/touchscreen/ucb1x00", 0);
+--#endif /* USE_INPUT_API */
+-+		ts = ts_open("/dev/input/event1", 0);
+- 	}
+- 
+- 	if (!ts) {
+---- tslib/tests/ts_print.c~event1
+-+++ tslib/tests/ts_print.c
+-@@ -28,11 +28,7 @@
+-         if( (tsdevice = getenv("TSLIB_TSDEVICE")) != NULL ) {
+-                 ts = ts_open(tsdevice,0);
+-         } else {
+--#ifdef USE_INPUT_API
+--                ts = ts_open("/dev/input/event0", 0);
+--#else
+--                ts = ts_open("/dev/touchscreen/ucb1x00", 0);
+--#endif /* USE_INPUT_API */
+-+                ts = ts_open("/dev/input/event1", 0);
+-         }
+- 
+- 	if (!ts) {
+---- tslib/tests/ts_test.c~event1
+-+++ tslib/tests/ts_test.c
+-@@ -120,11 +120,7 @@
+- 	signal(SIGTERM, sig);
+- 
+- 	if ((tsdevice = getenv("TSLIB_TSDEVICE")) == NULL) {
+--#ifdef USE_INPUT_API
+--		tsdevice = strdup ("/dev/input/event0");
+--#else
+--		tsdevice = strdup ("/dev/touchscreen/ucb1x00");
+--#endif /* USE_INPUT_API */
+-+		tsdevice = strdup ("/dev/input/event1");
+-         }
+- 
+- 	ts = ts_open (tsdevice, 0);
+---- tslib/tests/ts_print_raw.c~event1
+-+++ tslib/tests/ts_print_raw.c
+-@@ -28,11 +28,7 @@
+-         if( (tsdevice = getenv("TSLIB_TSDEVICE")) != NULL ) {
+-                 ts = ts_open(tsdevice,0);
+-         } else {
+--#ifdef USE_INPUT_API
+--                ts = ts_open("/dev/input/event0", 0);
+--#else
+--                ts = ts_open("/dev/touchscreen/ucb1x00", 0);
+--#endif /* USE_INPUT_API */
+-+                ts = ts_open("/dev/input/event1", 0);
+-         }
+- 
+- 	if (!ts) {
+---- tslib/tests/ts_harvest.c~event1
+-+++ tslib/tests/ts_harvest.c
+-@@ -75,11 +75,7 @@
+- 	signal(SIGTERM, sig);
+- 
+- 	if ((tsdevice = getenv("TSLIB_TSDEVICE")) == NULL) {
+--#ifdef USE_INPUT_API
+--		tsdevice = strdup ("/dev/input/event0");
+--#else
+--		tsdevice = strdup ("/dev/touchscreen/ucb1x00");
+--#endif /* USE_INPUT_API */
+-+		tsdevice = strdup ("/dev/input/event1");
+-         }
+- 
+- 	ts = ts_open (tsdevice, 0);
+diff --git a/Xorg/lib/tslib/patches/fix_version.patch b/Xorg/lib/tslib/patches/fix_version.patch
+deleted file mode 100644
+index d6a0ebd..0000000
+--- a/Xorg/lib/tslib/patches/fix_version.patch
++++ /dev/null
+@@ -1,32 +0,0 @@
+----
+- configure.ac |   10 +++++-----
+- 1 file changed, 5 insertions(+), 5 deletions(-)
+-
+-Index: tslib-1.0/configure.ac
+-===================================================================
+---- tslib-1.0.orig/configure.ac	2006-08-24 22:02:55.000000000 +0100
+-+++ tslib-1.0/configure.ac	2007-07-09 21:04:38.000000000 +0100
+-@@ -2,7 +2,7 @@
+- # Process this file with autoconf to produce a configure script.
+- 
+- AC_PREREQ(2.57)
+--AC_INIT(tslib, 0.0.2, kergoth@handhelds.org)
+-+AC_INIT(tslib, 1.0.0, kergoth@handhelds.org)
+- # AC_CONFIG_AUX_DIR(config)
+- AM_INIT_AUTOMAKE(dist-bzip2)
+- AC_CONFIG_SRCDIR([src/ts_close.c])
+-@@ -193,10 +193,10 @@ TS_CONF='${sysconfdir}/ts.conf'
+- AC_SUBST(TS_CONF)
+- 
+- # Library versioning
+--LT_RELEASE=0.0
+--LT_CURRENT=1
+--LT_REVISION=1
+--LT_AGE=1
+-+LT_RELEASE=1.0
+-+LT_CURRENT=0
+-+LT_REVISION=0
+-+LT_AGE=0
+- AC_SUBST(LT_RELEASE)
+- AC_SUBST(LT_CURRENT)
+- AC_SUBST(LT_REVISION)
+diff --git a/Xorg/lib/tslib/patches/tslib-input_raw-grab_events.patch b/Xorg/lib/tslib/patches/tslib-input_raw-grab_events.patch
+deleted file mode 100644
+index 4bd0a05..0000000
+--- a/Xorg/lib/tslib/patches/tslib-input_raw-grab_events.patch
++++ /dev/null
+@@ -1,120 +0,0 @@
+-This patch adds support for "EVIOCGRAB" on the input device, which
+-tells the kernel _not_ to deliver events of the touchscreen to
+-/dev/input/mice.  
+-
+-This is probably what most people want, since unprocessed raw touchscreen
+-events should not be converted to emulated PS/2 mouse movements.
+-
+-Signed-off-by: Harald Welte <laforge@openmoko.org>
+-
+-Index: a/plugins/input-raw.c
+-===================================================================
+---- a/plugins/input-raw.c	(revision 49)
+-+++ b/plugins/input-raw.c	(working copy)
+-@@ -18,6 +18,7 @@
+- 
+- #include <errno.h>
+- #include <stdio.h>
+-+#include <limits.h>
+- 
+- #include <stdlib.h>
+- #ifdef HAVE_UNISTD_H
+-@@ -33,6 +34,9 @@
+- 
+- #include "tslib-private.h"
+- 
+-+#define GRAB_EVENTS_WANTED	1
+-+#define GRAB_EVENTS_ACTIVE	2
+-+
+- struct tslib_input {
+- 	struct tslib_module_info module;
+- 
+-@@ -42,6 +46,7 @@
+- 
+- 	int	sane_fd;
+- 	int	using_syn;
+-+	int	grab_events;
+- };
+- 
+- static int check_fd(struct tslib_input *i)
+-@@ -64,6 +69,14 @@
+- 
+- 	if (bit & (1 << EV_SYN))
+- 		i->using_syn = 1;
+-+	
+-+	if (i->grab_events == GRAB_EVENTS_WANTED) {
+-+		if (ioctl(ts->fd, EVIOCGRAB, (void *)1)) {
+-+			fprintf(stderr, "Unable to grab selected input device\n");
+-+			return -1;
+-+		}
+-+		i->grab_events = GRAB_EVENTS_ACTIVE;
+-+	}
+- 
+- 	return 0;
+- }
+-@@ -222,6 +235,15 @@
+- 
+- static int ts_input_fini(struct tslib_module_info *inf)
+- {
+-+	struct tslib_input *i = (struct tslib_input *)inf;
+-+	struct tsdev *ts = inf->dev;
+-+
+-+	if (i->grab_events == GRAB_EVENTS_ACTIVE) {
+-+		if (ioctl(ts->fd, EVIOCGRAB, (void *)0)) {
+-+			fprintf(stderr, "Unable to un-grab selected input device\n");
+-+		}
+-+	}
+-+
+- 	free(inf);
+- 	return 0;
+- }
+-@@ -231,6 +253,36 @@
+- 	.fini	= ts_input_fini,
+- };
+- 
+-+static int parse_raw_grab(struct tslib_module_info *inf, char *str, void *data)
+-+{
+-+	struct tslib_input *i = (struct tslib_input *)inf;
+-+	unsigned long v;
+-+	int err = errno;
+-+
+-+	v = strtoul(str, NULL, 0);
+-+
+-+	if (v == ULONG_MAX && errno == ERANGE)
+-+		return -1;
+-+	
+-+	errno = err;
+-+	switch ((int)data) {
+-+	case 1:
+-+		if (v)
+-+			i->grab_events = GRAB_EVENTS_WANTED;
+-+		break;
+-+	default:
+-+		return -1;
+-+	}
+-+	return 0;
+-+}
+-+
+-+static const struct tslib_vars raw_vars[] =
+-+{
+-+	{ "grab_events", (void *)1, parse_raw_grab },
+-+};
+-+
+-+#define NR_VARS (sizeof(raw_vars) / sizeof(raw_vars[0]))
+-+
+- TSAPI struct tslib_module_info *mod_init(struct tsdev *dev, const char *params)
+- {
+- 	struct tslib_input *i;
+-@@ -245,5 +297,12 @@
+- 	i->current_p = 0;
+- 	i->sane_fd = 0;
+- 	i->using_syn = 0;
+-+	i->grab_events = 0;
+-+
+-+	if (tslib_parse_vars(&i->module, raw_vars, NR_VARS, params)) {
+-+		free(i);
+-+		return NULL;
+-+	}
+-+
+- 	return &(i->module);
+- }
 diff --git a/lang/twisted/Makefile b/lang/twisted/Makefile
 index f0b7557..3b661b1 100644
 --- a/lang/twisted/Makefile
