@@ -28,7 +28,10 @@ repo/openwrt/update:
 repo/patch: feeds/install repo/openwrt/patch repo/packages/patch
 
 repo/openwrt/patch: patches/openwrt.patch 
-	cd ../openwrt && if [[ ! -f .mjb.patched ]]; then git apply ../mjb/patches/openwrt.patch; fi
+	cd ../openwrt && if [[ ! -f .mjb.patched ]]; then
+		git apply ../mjb/patches/openwrt.patch; 
+		git apply ../mjb/patches/openwrt_fbdev.patch;
+	fi
 	touch ../openwrt/.mjb.patched
 
 repo/packages/patch: patches/openwrt_packages.patch 
