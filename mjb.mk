@@ -43,6 +43,20 @@ repo/openwrt/install: package/dropbear/install
 	cd ../openwrt && ./scripts/feeds install mpdas
 	cd ../openwrt && ./scripts/feeds install pympdtouchgui
 	cd ../openwrt && ./scripts/feeds install tslib
+	cd ../openwrt && ./scripts/feeds install libavahi
+	cd ../openwrt && ./scripts/feeds install lidaemon
+	cd ../openwrt && ./scripts/feeds install libexpat 
+	cd ../openwrt && ./scripts/feeds install libgdbm
+	cd ../openwrt && ./scripts/feeds install libid3tag
+	cd ../openwrt && ./scripts/feeds install libsdl-ttf
+	cd ../openwrt && ./scripts/feeds install libsdl-image
+	cd ../openwrt && ./scripts/feeds install uclibcxx
+	cd ../openwrt && ./scripts/feeds install avahi-daemon
+	cd ../openwrt && ./scripts/feeds install alsa-utils
+	cd ../openwrt && ./scripts/feeds install event_test
+	cd ../openwrt && ./scripts/feeds install mountd
+	cd ../openwrt && ./scripts/feeds install lame
+	cd ../openwrt && ./scripts/feeds install mpc
 	cp openwrt.config ../openwrt/.config
 
 package/dropbear/install:
