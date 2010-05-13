@@ -73,7 +73,7 @@ package/tslib/install: ../openwrt/dl/tslib-1.0.84.tar.bz2
 ../tslib/tslib-1.0.84: ../tslib
 	cp -r ../tslib/tslib ../tslib/tslib-1.0.84
 ../tslib:
-	git svn clone svn://svn.berlios.de/tslib/trunk tslib
+	cd ../ && git svn clone svn://svn.berlios.de/tslib/trunk tslib
 	
 
 distro/upload: distro/site
