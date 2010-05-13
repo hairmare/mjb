@@ -41,7 +41,7 @@ repo/packages/patch: patches/openwrt_packages.patch
 repo/world: feeds/install repo/patch repo/openwrt/install
 	cd ../openwrt && make world
 
-repo/openwrt/install: package/dropbear/install
+repo/openwrt/install: package/dropbear/install package/tslib/install
 	cd ../openwrt && ./scripts/feeds install mpd
 	cd ../openwrt && ./scripts/feeds install mpdas
 	cd ../openwrt && ./scripts/feeds install pympdtouchgui
@@ -65,6 +65,16 @@ repo/openwrt/install: package/dropbear/install
 package/dropbear/install:
 	cp keys/default.rsa.pub ../openwrt/package/dropbear/files/dropbear.authorized_keys
 
+package/tslib/install: ../openwrt/dl/tslib-1.0.84.tar.bz2
+../openwrt/dl/tslib-1.0.84.tar.bz2: ../tslib-1.0.84.tar.gz
+	cp ../tslib/tslib-1.0.84.tar.bz2 ../openwrt/dl/
+../tslib-1.0.84.tar.gz: ../tslib/tslib-1.0.84
+	cd ../tslib && tar jcvf tslib-1.0.84.tar.gz tslib-1.0.84/
+../tslib/tslib-1.0.84: ../tslib
+	cp -r ../tslib/tslib ../tslib/tslib-1.0.84
+../tslib:
+	git svn clone svn://svn.berlios.de/tslib/trunk tslib
+	
 
 distro/upload: distro/site
 	rsync -az --delete --force _site/ hairmare.ch:/var/www/mjb.hairmare.ch/htdocs/
