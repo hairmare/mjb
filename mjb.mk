@@ -1,4 +1,4 @@
-repo/init: repo/desktop/init repo/mjb/init repo/openwrt/init
+repo/init: repo/desktop/init repo/mjb/init repo/openwrt/init repo/patch
 
 repo/desktop/init: ../desktop
 ../desktop:
@@ -25,8 +25,7 @@ repo/openwrt/update:
 	cd ../openwrt && git pull
 	cd ../openwrt && ./scripts/feeds update
 
-repo/patch: feeds/install repo/openwrt/patch repo/packages/patch
-
+repo/patch: feeds/install repo/openwrt/patch repo/packages/patch repo/openwrt/install
 repo/openwrt/patch: patches/openwrt.patch 
 	cd ../openwrt && if [[ ! -f .mjb.patched ]]; then \
 		git apply ../mjb/patches/openwrt.patch; \
@@ -38,7 +37,8 @@ repo/packages/patch: patches/openwrt_packages.patch
 	cd ../openwrt/feeds/packages/  && if [[ ! -f .mjb.patched ]]; then git apply ../../../mjb/patches/openwrt_packages.patch; fi
 	touch ../openwrt/feeds/packages/.mjb.patched
 	
-repo/world: feeds/install repo/patch repo/openwrt/install
+repo/world: 
+	cp openwrt.config ../openwrt/.config
 	cd ../openwrt && make world
 
 repo/openwrt/install: package/dropbear/install package/tslib/install
@@ -60,30 +60,32 @@ repo/openwrt/install: package/dropbear/install package/tslib/install
 	cd ../openwrt && ./scripts/feeds install mountd
 	cd ../openwrt && ./scripts/feeds install lame
 	cd ../openwrt && ./scripts/feeds install mpc
-	cp openwrt.config ../openwrt/.config
 
 package/dropbear/install:
 	cp keys/default.rsa.pub ../openwrt/package/dropbear/files/dropbear.authorized_keys
 
 package/tslib/install: ../openwrt/dl/tslib-1.0.84.tar.bz2
-../openwrt/dl/tslib-1.0.84.tar.bz2: ../tslib-1.0.84.tar.gz
+../openwrt/dl/tslib-1.0.84.tar.bz2: ../tslib-1.0.84.tar.bz2
 	cp ../tslib/tslib-1.0.84.tar.bz2 ../openwrt/dl/
-../tslib-1.0.84.tar.gz: ../tslib/tslib-1.0.84
-	cd ../tslib && tar jcvf tslib-1.0.84.tar.gz tslib-1.0.84/
+../tslib-1.0.84.tar.bz2: ../tslib/tslib-1.0.84
+	cd ../tslib && tar jcvf tslib-1.0.84.tar.bz2 tslib-1.0.84/
 ../tslib/tslib-1.0.84: ../tslib
 	cp -r ../tslib/tslib ../tslib/tslib-1.0.84
 ../tslib:
 	cd ../ && git svn clone svn://svn.berlios.de/tslib/trunk tslib
 	
 
-image/vdi: repo/world ../openwrt/bin/x86/openwrt-x86-generic-combined-ext2.vdi
-../openwrt/bin/x86/openwrt-x86-generic-combined-ext2.vdi:
-	cd ../openwrt/bin/x86/ && gunzip openwrt-x86-generic-combined-ext2.img.gz
-	cd ../openwrt/bin/x86/ && VboxManage convertfromraw \
+image/vdi: ../openwrt/bin/x86/openwrt-x86-generic-combined-ext2.vdi
+../openwrt/bin/x86/openwrt-x86-generic-combined-ext2.img.gz: repo/world
+../openwrt/bin/x86/openwrt-x86-generic-combined-ext2.img: ../openwrt/bin/x86/openwrt-x86-generic-combined-ext2.img.gz
+	cd ../openwrt/bin/x86/ && gunzip -c \
+		openwrt-x86-generic-combined-ext2.img.gz \
+		> openwrt-x86-generic-combined-ext2.img
+../openwrt/bin/x86/openwrt-x86-generic-combined-ext2.vdi: ../openwrt/bin/x86/openwrt-x86-generic-combined-ext2.img
+	cd ../openwrt/bin/x86/ && VBoxManage convertfromraw \
 		--format vdi \
 		openwrt-x86-generic-combined-ext2.img \ 
 		openwrt-x86-generic-combined-ext2.vdi
-	cd ../openwrt/bin/x86/ && rm openwrt-x86-generic-combined-ext2.img
 
 
 distro/upload: distro/site
