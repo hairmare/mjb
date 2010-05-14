@@ -76,6 +76,16 @@ package/tslib/install: ../openwrt/dl/tslib-1.0.84.tar.bz2
 	cd ../ && git svn clone svn://svn.berlios.de/tslib/trunk tslib
 	
 
+image/vdi: repo/world ../openwrt/bin/x86/openwrt-x86-generic-combined-ext2.vdi
+../openwrt/bin/x86/openwrt-x86-generic-combined-ext2.vdi:
+	cd ../openwrt/bin/x86/ && gunzip openwrt-x86-generic-combined-ext2.img.gz
+	cd ../openwrt/bin/x86/ && VboxManage convertfromraw \
+		--format vdi \
+		openwrt-x86-generic-combined-ext2.img \ 
+		openwrt-x86-generic-combined-ext2.vdi
+	cd ../openwrt/bin/x86/ && rm openwrt-x86-generic-combined-ext2.img
+
+
 distro/upload: distro/site
 	rsync -az --delete --force _site/ hairmare.ch:/var/www/mjb.hairmare.ch/htdocs/
 
